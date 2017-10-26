@@ -1,0 +1,134 @@
+% mnras_template.tex
+%
+% LaTeX template for creating an MNRAS paper
+%
+% v3.0 released 14 May 2015
+% (version numbers match those of mnras.cls)
+%
+% Copyright (C) Royal Astronomical Society 2015
+% Authors:
+% Keith T. Smith (Royal Astronomical Society)
+
+% Change log
+%
+% v3.0 May 2015
+%    Renamed to match the new package name
+%    Version number matches mnras.cls
+%    A few minor tweaks to wording
+% v1.0 September 2013
+%    Beta testing only - never publicly released
+%    First version: a simple (ish) template for creating an MNRAS paper
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[fleqn,usenatbib]{mnras}  % a4paper,
+
+% MNRAS is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+%\usepackage{newtxtext,newtxmath}
+%\usepackage{lmodern}
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+\usepackage{diagbox}
+
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+
+% Only include extra packages if you really need them. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+\usepackage{amssymb}	% Extra maths symbols
+\usepackage{savesym}  % prevent symbol conflicts
+%\generate{%
+%  \file{breqn.sty}{\nopreamble\from{breqn.dtx}{breqn.sty}}%
+%}
+%\usepackage{breqn} % automatic breaking equation 
+%\usepackage{fancyvrb}
+%\VerbatimFootnotes
+\usepackage{cprotect}  % to allow verb in caption 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+%\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+% Title of the paper, and the short title which is used in the headers.
+% Keep the title short and informative.
+\title[DRW kernels]{ Detecting oscillatory modulation in quasar light curves using combination kernel Gaussian Processes with Celerite}
+
+% The list of authors, and the short list which is used in the headers.
+% If you need two or more lines of authors, add an extra line using \newauthor
+\author[K. Suberlak et al.]{
+Krzysztof Suberlak,$^{1}$\thanks{E-mail: suberlak@uw.edu}
+\v{Z}eljko Ivezi\'c $^{1}$
+\\
+% List of institutions
+$^{1}$Department of Astronomy, University of Washington, Seattle, WA, United States\\
+}
+
+% These dates will be filled out by the publisher
+\date{Accepted XXX. Received YYY; in original form ZZZ}
+
+% Enter the current year, for the copyright statements etc.
+\pubyear{2017}
+
+% Don't change these lines
+\begin{document}
+\label{firstpage}
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\maketitle
+
+% Abstract of the paper
+\begin{abstract}
+ Aim:  We propose a new application for Gaussian Processes combination kernels for detecting DRW light curves with sinusoidal modulation.  Combination kernels in GP models have been successfully employed to study the variability of  spotted, rotating stars (Angus+2017). A model can be expressed in that framework as a combination of Gaussian kernels, i.e. functions describing covariance between pairs of points as a mode of their separation in a chosen metric. For light curves the time difference between pairs of observations can be the most useful metric. Thus the kernel f(delta x)  us a function of time difference delta( t ) . Gaussian Processes can successfully recover the DRW signal, represented by the Real Term kernel in Celerite, fDRW.  We can combine that kernel with  oscillatory term fSHO.  Thus a combination kernel consists of two kernels with relative amplitudes A and B ,  fCOMB = A fDRW + B fSHO . A scientific application would be to search for binary SMBH where the orbital motion modulates the DRW signal from accretion disks ( amplitude A similar to B) ,  or distinguish between a signal from a Quasar ( dominant amplitude A ) or an RR Lyrae / EB (dominant amplitude B).  
+\end{abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
+
+\section{Motivation}
+There are various ways of model selection. Given observational dataset, and a hypothesis that a certain model describes the parent distribution of the observables, one would explore the parameter space by calculating for each set of parameters the metric describing  the 'goodness of fit' between the data and the model.  One such metric is  chi-squared,  but one might choose any other cost function that would be optimized to find the best set of parameters for the model. This means that to distinguish between eg. a DRW model and an oscillatory model one would optimize for the best parameters of DRW model, and then do likewise for the harmonic oscillation model. Such procedure requires two 'passes' through the dataset (Butler\&Bloom2011,  Sesar+2007 ) . For the last decade Gaussian Processes have become more well known as an alternative approach to classical  'least sqares fitting', by employing a class of functions that  are characterized by covariance between pairs of points in the dataset ( Williams GP Book, Celerite paper  DFM+2017).   A quick classifier would be directly relevant in context of big astronomical surveys, such as LSST, SDSS, PTF, PS1, etc. 
+
+
+\section{Methods}
+ We first test the method by simulating a DRW light curve (parametrized by asymptotic amplitude $SF_{\infty}$, and characteristic timescale $\tau$ ) , and then adding a sinusoidal modulation (parametrized by amplitude A, period P). With $\tau  = 100 $ days, and regular sampling every dt = 5 days  , we explore regimes from $A << SF_{\infty}$,  to $A ~ SF_{\infty}$ , and from $P << \tau$, to $P >> \tau$ : 
+
+$A \in { 0.01,  0.1,  0.25,  0.5, 0.75 } SF_{\infty}       X P \in { 0.25,  1 ,  4 } \tau   $
+
+We then test the combination kernel GP on SDSS S82 light curves of spectroscopically selected QSO from Schneider+2007 to measure completeness. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
+
+% The best way to enter references is to use BibTeX:
+
+%\bibliographystyle{mnras}
+%\bibliography{references} % if your bibtex file is called references.bib
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Don't change these lines
+\bsp	% typesetting comment
+\label{lastpage}
+\end{document}
+
+% End of mnras_template.tex
